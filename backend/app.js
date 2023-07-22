@@ -12,9 +12,7 @@ require("dotenv").config();
 const User = require("./models/user");
 const Post = require("./models/post");
 
-//encryption
-const saltRounds = 10;
-
+//using express and necessary packages
 const app = express();
 
 app.use(cors());
@@ -32,7 +30,8 @@ app.use("/", userRouter);
 
 //get and create posts
 const postRouter = require("./routes/post");
-app.use("/", postRouter);
+const { requireAuth } = require("./middleware/authMiddleware");
+app.use("/", requireAuth, postRouter);
 
 //resource not found
 app.use((req, res, next) => {

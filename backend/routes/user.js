@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/user");
+require("dotenv").config();
+
+//encryption
+const saltRounds = 10;
 
 router.get("/", async (req, res) => {
   const result = await User.find({});
@@ -34,6 +38,7 @@ router.post("/registration", async (req, res) => {
       message: "User successsfully created",
     });
   } catch (error) {
+    console.log(error);
     res.send({ message: "Couldn't create user!", error: error });
   }
 });
@@ -67,9 +72,7 @@ router.post("/login", async (req, res) => {
             async (err, token) => {
               await User.updateOne(
                 { _id: user._id },
-                {
-                  $set: { token },
-                }
+                { $set: { token },}
               );
               user.save();
               return res.status(200).json({
