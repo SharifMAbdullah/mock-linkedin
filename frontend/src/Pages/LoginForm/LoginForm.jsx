@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import CustomModal from '../Components/Modal';
+import { useNavigate } from 'react-router-dom';
+import CustomModal from '../../Components/CustomModal/Modal';
 
 import styles from './LoginForm.module.css';
 
-const LoginForm = () => {
+const LoginForm = ({onLoginSuccess}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalMessage, setModalMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,11 +26,12 @@ const LoginForm = () => {
         await axios.post('http://localhost:5656/login', { email, password });
         console.log('Login successful');
         setModalTitle('Login Successful');
-        setModalMessage('You can now access the create post page.');
+        setModalMessage('You can now access the home page.');
         setShowModal(true);
         setEmail('');
         setPassword('');
-        window.location.href = 'file:///home/sharif/Desktop/mock-linkedin/frontend/index.html';
+        navigate('/home');
+        onLoginSuccess();
       } catch (error) {
         setModalTitle('Login Failed');
         setModalMessage('Login failed. Please check your email and password.');
