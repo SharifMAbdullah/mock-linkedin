@@ -5,7 +5,6 @@ const multer = require("multer");
 const Minio = require("minio");
 const { requireAuth } = require("../middleware/authMiddleware");
 
-//////
 // Set up MinIO client
 const minioClient = new Minio.Client({
   endPoint: "localhost",
@@ -25,7 +24,10 @@ router.get("/", (req, res) => {
 
 // Handle the image upload and store it on MinIO
 router.post("/upload", upload.single("image"), (req, res) => {
+  console.log("Image Upload Request Data:", req.file);
+
   if (!req.file) {
+    console.log("No image file found");
     return res.status(400).send("No image file found.");
   }
 
@@ -44,7 +46,7 @@ router.post("/upload", upload.single("image"), (req, res) => {
     metaData,
     (err, etag) => {
       if (err) {
-        console.log(err);
+        console.log("Error uploading image:", err);
         return res.status(500).send("Error uploading the image.");
       }
 
@@ -53,10 +55,12 @@ router.post("/upload", upload.single("image"), (req, res) => {
     }
   );
 });
-//////
-//create a new post
+
+// Create a new post
 router.post("/createPost", requireAuth, async (req, res) => {
+  console.log("Create Post Request Data:", req.body);
   console.log(req.body);
+
   try {
     const newPost = new Post({
       content: req.body.content,
@@ -64,20 +68,22 @@ router.post("/createPost", requireAuth, async (req, res) => {
     });
     const savedPost = await newPost.save();
 
+    console.log("New post saved:", savedPost); // Add this line to check if the post is successfully saved
+
     res.send({
       success: true,
-      message: "New post successsfully created",
+      message: "New post successfully created",
     });
-  }
-  catch (err) {
-    console.log(err);
+  } catch (err) {
+    console.log("Error creating post:", err);
     res.send({ message: "Couldn't create Post!", error: err });
   }
-  //res.json(newPost);
 });
 
+
+
 router.get("/viewPost", async (req, res) => {
-  //find latest post of all users
+  // Find the latest posts of all users
   const posts = await Post.find().sort({ createdAt: -1 });
   res.json(posts);
 });

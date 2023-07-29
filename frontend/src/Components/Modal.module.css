@@ -1,0 +1,15 @@
+/* Add your custom styles here */
+.customModal {
+    position: fixed;
+    /* This will keep the modal fixed at the center of the screen */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    /* Ensure the modal is on top of everything */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Add a semi-transparent background for a shadowy effect */
+    padding: 20px;
+    border-radius: 5px;
+    height: 7rem;
+}
