@@ -9,7 +9,7 @@ const PostList = () => {
 
   useEffect(() => {
     // Fetch posts from the server (adjust the API endpoint accordingly)
-    axios.get('http://localhost:5656/posts')
+    axios.get('http://localhost:5656/posts') // need to correct the api
       .then((response) => {
         setPosts(response.data);
       })

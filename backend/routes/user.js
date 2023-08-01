@@ -21,7 +21,10 @@ router.post("/registration", async (req, res) => {
   try {
     const hash = await new Promise((resolve, reject) => {
       bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-        if (err) reject(err);
+        if (err) {
+          res.send({ message: "Hashing error!", error: err });
+          reject(err);
+        }
         resolve(hash);
       });
     });
@@ -48,15 +51,18 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).send("Please fill all required fields");
+      res.sendStatus(400);
+      res.send({message: "Please fill all required fields!", error: error});
     } else {
       const user = await User.findOne({ email });
       if (!user) {
-        res.status(400).send("User email or password is incorrect");
+        res.sendStatus(400);
+        res.send({message: "User doesn't exist!", error: error});
       } else {
         const validateUser = await bcrypt.compare(password, user.password);
         if (!validateUser) {
-          res.status(400).send("User email or password is incorrect");
+          res.sendStatus(400);
+          res.send({message: "User email or password is incorrect!", error: error});
         } else {
           const payload = {
             userId: user._id,
@@ -65,15 +71,9 @@ router.post("/login", async (req, res) => {
           const JWT_SECRET_KEY =
             process.env.JWT_SECRET_KEY || "PLACEHOLDER_SECRET_KEY";
 
-          jwt.sign(
-            payload,
-            JWT_SECRET_KEY,
-            { expiresIn: 84600 },
+          jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: 84600 },
             async (err, token) => {
-              await User.updateOne(
-                { _id: user._id },
-                { $set: { token },}
-              );
+              await User.updateOne({ _id: user._id },{ $set: { token },});
               user.save();
               return res.status(200).json({
                 user: {
@@ -89,6 +89,7 @@ router.post("/login", async (req, res) => {
       }
     }
   } catch (error) {
+    res.send({ message: "Error in logging in", error: error });
     console.log(error, "Error");
   }
 
