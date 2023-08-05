@@ -4,3 +4,13 @@
     height: auto;
     margin-bottom: 10px;
 }
+.postItem{
+    background-color:darkslategrey;
+    border-style:groove;
+    border-radius: 50% 20% / 10% 40%;
+    text-align: center;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    border-top-width: 30px;
+    border-bottom-width: 30px;
+}

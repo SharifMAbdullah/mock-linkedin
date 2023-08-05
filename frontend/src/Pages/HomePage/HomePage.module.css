@@ -1,0 +1,10 @@
+h2 {
+    background-color:slategray;
+    border-style: groove;
+    border-radius:2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    border-top-width: 30px;
+    border-bottom-width: 30px;
+}

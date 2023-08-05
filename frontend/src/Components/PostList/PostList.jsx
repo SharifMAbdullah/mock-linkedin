@@ -20,7 +20,7 @@ const PostList = () => {
 
   return (
     <div className={styles.postList}>
-      <h3>Recent Posts</h3>
+      <h4>Recent Posts</h4>
       {posts.map((post) => (
         <PostItem key={post.id} post={post} />
       ))}

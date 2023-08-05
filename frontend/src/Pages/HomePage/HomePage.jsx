@@ -7,7 +7,7 @@ import styles from './HomePage.module.css';
 const HomePage = () => {
   return (
     <div className={styles.container}>
-      <h2>Welcome to Home Page!</h2>
+      <h2 id='lala'>Welcome to Home Page!</h2>
       <CreatePostForm />
       <PostList />
     </div>
