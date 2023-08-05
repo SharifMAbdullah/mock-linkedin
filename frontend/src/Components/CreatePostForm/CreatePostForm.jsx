@@ -16,45 +16,36 @@ const CreatePostForm = () => {
     setImage(selectedImage);
   };
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const formData = new FormData();
-  formData.append('content', content);
-  if (image) {
-    formData.append('image', image);
+  const postObject = {
+    content: content,
+    image: image
   }
-
-  axios.post('http://localhost:5656/createPost', formData, {
+  console.log(postObject);
+  try {
+    await axios.post('http://localhost:5656/createPost', postObject, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Important for file upload
-      },
-    })
-    .then((response) => {
-      if (response.data.error) {
-        console.error('Error creating post: ' + response.data.error);
-      } else {
-        sessionStorage.setItem("supersecretkey", JSON.stringify(response.data));
-        console.log('Post created successfully!');
-        // Add any success message or redirect to the homepage
+        Authorization: sessionStorage.getItem("token"),
+        'Content-Type': 'multipart/form-data',
       }
-    })
-    .catch((error) => {
-      console.error('Error creating post:', error.message);
-      // Handle error, show error message, etc.
     });
+    console.log('Post created successfully!');
+  } catch (error) {
+    console.error('Error creating post:', error.message);
+  }
 };
-
-
 
   return (
     <div className={styles.formContainer}>
       <h3>Create a New Post</h3>
-      <form onSubmit={handleSubmit}>
+      <form id="postForm" onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label htmlFor="content">Write something:</label>
           <textarea
             id="content"
+            name="content"
             value={content}
             onChange={handleContentChange}
             required
@@ -65,6 +56,7 @@ const handleSubmit = (e) => {
           <input
             type="file"
             id="image"
+            name="image"
             accept="image/*"
             onChange={handleImageChange}
           />

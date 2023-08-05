@@ -11,6 +11,8 @@ const requireAuth = (req, res, next) => {
                 res.redirect("/login");
             } else {
                 console.log(decodedToken);
+                const validToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+                req.user = validToken;
                 next();
             }
         });

@@ -18,6 +18,7 @@ const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 //testing home route
 app.get("/", (req, res) => {
@@ -30,8 +31,7 @@ app.use("/", userRouter);
 
 //get and create posts
 const postRouter = require("./routes/post");
-const { requireAuth } = require("./middleware/authMiddleware");
-app.use("/", requireAuth, postRouter);
+app.use("/", postRouter);
 
 //resource not found
 app.use((req, res, next) => {

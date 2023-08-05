@@ -23,20 +23,25 @@ const LoginForm = ({onLoginSuccess}) => {
       setShowModal(true);
     } else {
       try {
-        await axios.post('http://localhost:5656/login', { email, password });
-        console.log('Login successful');
-        setModalTitle('Login Successful');
-        setModalMessage('You can now access the home page.');
-        setShowModal(true);
-        setEmail('');
-        setPassword('');
-        navigate('/home');
-        onLoginSuccess();
-      } catch (error) {
-        setModalTitle('Login Failed');
-        setModalMessage('Login failed. Please check your email and password.');
-        setShowModal(true);
-        console.error('Login error:', error.message);
+        axios.post('http://localhost:5656/login', { email, password })
+          .then((response) => {
+            if (response.data.error) {
+              console.error('Error logging in: ' + response.data.error);
+            } else {
+              console.log('Logged in!');
+              sessionStorage.setItem("token", response.data.token);
+              setPassword('');
+              setEmail('');
+              navigate('/home');
+              onLoginSuccess();
+            }
+          })
+      }
+      catch (error) {
+      setModalTitle('Login Failed');
+      setModalMessage('Login failed. Please check your email and password.');
+      setShowModal(true);
+      console.error('Login error:', error.message);
       }
     }
   };

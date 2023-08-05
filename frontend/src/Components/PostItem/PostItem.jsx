@@ -6,9 +6,11 @@ import styles from './PostItem.module.css';
 const PostItem = ({ post }) => {
   return (
     <div className={styles.postItem}>
-      <h4>{post.username}</h4>
+      <h4>{post.username} wrote:</h4>
       <p>{post.content}</p>
-      {/* Display optional image here if available in the post object */}
+      {post.image && (
+        <img src={`http://localhost:5656/${post.image}`} alt={post.username + "'s image"} />
+      )}
     </div>
   );
 };
