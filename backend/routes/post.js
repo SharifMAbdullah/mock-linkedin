@@ -101,7 +101,24 @@ router.get("/viewPost", async (req, res) => {
   res.json(posts);
 });
 
-router.get("/viewPost/:posId", async (req, res) => { 
-  
+
+router.get("/viewPost/single", async (req, res) => {
+      console.log("ekhane ashse");
+
+  const postId = req.query.postId;
+  try {
+    // Find the post with the given postId
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+    res.json(post);
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the post" });
+  }
 });
+
 module.exports = router;

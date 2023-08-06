@@ -30,7 +30,6 @@ async function notifyAllUsers(postId, username) {
 }
 
 router.get("/notifications", async (req, res) => {
-    console.log('ekhane ashse');
   try {
     // Fetch all notifications from the database
     const notifications = await Notification.find()
@@ -38,7 +37,6 @@ router.get("/notifications", async (req, res) => {
       .sort({ createdAt: -1 });
 
       res.json(notifications);
-      console.log('notifications :', notifications);
   } catch (err) {
     console.log("Error fetching notifications:", err);
     res
