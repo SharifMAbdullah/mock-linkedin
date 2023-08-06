@@ -1,0 +1,18 @@
+/* NotificationPage.module.css */
+.notificationPage {
+    padding: 20px;
+}
+
+.notificationList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.notificationBox {
+    color: black;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 200px;
+}

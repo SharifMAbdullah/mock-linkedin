@@ -33,6 +33,9 @@ app.use("/", userRouter);
 const postRouter = require("./routes/post");
 app.use("/", postRouter);
 
+const notificationRouter = require("./routes/notification");
+app.use("/", notificationRouter);
+
 //resource not found
 app.use((req, res, next) => {
   res.status(404).json({ message: "route not found" });

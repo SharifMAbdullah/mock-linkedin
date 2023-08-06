@@ -23,7 +23,9 @@ const handleSubmit = async (e) => {
     content: content,
     image: image
   }
+
   console.log(postObject);
+
   try {
     await axios.post('http://localhost:5656/createPost', postObject, {
       headers: {
@@ -31,6 +33,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'multipart/form-data',
       }
     });
+    
     console.log('Post created successfully!');
   } catch (error) {
     console.error('Error creating post:', error.message);

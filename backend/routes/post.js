@@ -4,13 +4,15 @@ const Post = require("../models/post");
 const multer = require("multer");
 const Minio = require("minio");
 const { requireAuth } = require("../middleware/authMiddleware");
+const Notification = require("../models/notification");
+const { notifyAllUsers } = require("./notification");
 
 const minioClient = new Minio.Client({
   endPoint: "localhost",
   port: 9000,
   useSSL: false,
-  accessKey: "U9U4pxLvvyTQNMm3Pcib",
-  secretKey: "0XaN5gnJ7wUnpSgn3Fw2b6i6xwP4eHS1QR4FJLrX",
+  accessKey: "2clxQBCERNIESxmVBfFk",
+  secretKey: "prRpg2t4SEfKthPKyqogVaPz7PdaFTDDYmGBcQNm",
 });
 
 const upload = multer({ dest: "uploads/" });
@@ -25,6 +27,7 @@ router.post(
 
       // Check if image was provided
       if (!req.file) {
+
         // Create post without image
         const username = req.user.username;
         const newPost = new Post({
@@ -32,21 +35,18 @@ router.post(
           username: username,
         });
 
-        newPost
-          .save()
-          .then((savedPost) => {
-            console.log("New post saved:", savedPost);
-            return res.send({
-              success: true,
-              message: "New post successfully created",
-            });
-          })
-          .catch((err) => {
-            console.log("Error creating post:", err);
-            return res.send({ message: "Couldn't create Post!" });
-          });
+        const savedPost = await newPost.save();
 
-        return;
+        // Notify all other users
+        await notifyAllUsers(savedPost._id, username);
+
+        console.log("New post saved:", savedPost);
+        return res.send({
+          success: true,
+          message: "New post successfully created",
+        });
+
+
       }
 
       // Image was provided, proceed with processing
@@ -63,7 +63,7 @@ router.post(
         objectName,
         filePath,
         metaData,
-        (err, etag) => {
+        async (err, etag) => {
           if (err) {
             console.log("Error uploading image:", err);
             return res.status(500).send("Error uploading the image.");
@@ -78,19 +78,14 @@ router.post(
             username: username,
           });
 
-          newPost
-            .save()
-            .then((savedPost) => {
-              console.log("New post saved:", savedPost);
-              return res.send({
-                success: true,
-                message: "New post successfully created",
-              });
-            })
-            .catch((err) => {
-              console.log("Error creating post:", err);
-              return res.send({ message: "Couldn't create Post!" });
-            });
+          const savedPost = await newPost.save();
+          //Notify all other users
+          await notifyAllUsers(savedPost._id, username);
+          console.log("New post saved:", savedPost);
+          return res.send({
+            success: true,
+            message: "New post successfully created",
+          });
         }
       );
     } catch (err) {
@@ -106,4 +101,7 @@ router.get("/viewPost", async (req, res) => {
   res.json(posts);
 });
 
+router.get("/viewPost/:posId", async (req, res) => { 
+  
+});
 module.exports = router;
