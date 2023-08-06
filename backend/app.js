@@ -34,7 +34,7 @@ const postRouter = require("./routes/post");
 app.use("/", postRouter);
 
 const notificationRouter = require("./routes/notification");
-app.use("/", notificationRouter);
+app.use("/", notificationRouter.router);
 
 //resource not found
 app.use((req, res, next) => {

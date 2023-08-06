@@ -49,4 +49,4 @@ router.get("/notifications", async (req, res) => {
 //     notifyAllUsers,
 //     router
 // };
-module.exports = router;
+module.exports = { router, notifyAllUsers };

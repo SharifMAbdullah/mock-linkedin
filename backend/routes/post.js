@@ -5,7 +5,7 @@ const multer = require("multer");
 const Minio = require("minio");
 const { requireAuth } = require("../middleware/authMiddleware");
 const Notification = require("../models/notification");
-const { notifyAllUsers } = require("./notification");
+const notificationModule = require("./notification");
 
 const minioClient = new Minio.Client({
   endPoint: "localhost",
@@ -38,7 +38,7 @@ router.post(
         const savedPost = await newPost.save();
 
         // Notify all other users
-        await notifyAllUsers(savedPost._id, username);
+        await notificationModule.notifyAllUsers(savedPost._id, username);
 
         console.log("New post saved:", savedPost);
         return res.send({
@@ -80,7 +80,7 @@ router.post(
 
           const savedPost = await newPost.save();
           //Notify all other users
-          await notifyAllUsers(savedPost._id, username);
+          await notificationModule.notifyAllUsers(savedPost._id, username);
           console.log("New post saved:", savedPost);
           return res.send({
             success: true,

@@ -58,8 +58,9 @@ const NotificationPage = () => {
       {/* Display the response data in a box */}
       {responseData && (
         <div className={styles.responseDataBox}>
-          <h3>Response Data:</h3>
-          <pre>{JSON.stringify(responseData, null, 2)}</pre>
+            <h3>Full Post</h3>
+            <h4>{responseData.username}</h4>
+            <p>{responseData.content}</p>
         </div>
       )}
     </div>
