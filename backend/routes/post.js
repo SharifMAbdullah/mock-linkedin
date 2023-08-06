@@ -74,7 +74,7 @@ router.post(
           const username = req.user.username;
           const newPost = new Post({
             content: req.body.content,
-            image: req.file.path,
+            image: "http://localhost:9000/linkedin/" + objectName,
             username: username,
           });
 

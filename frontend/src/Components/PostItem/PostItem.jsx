@@ -9,7 +9,7 @@ const PostItem = ({ post }) => {
       <h4>{post.username} wrote:</h4>
       <p>{post.content}</p>
       {post.image && (
-        <img src={`http://localhost:5656/${post.image}`} alt={post.username + "'s image"} />
+        <img src={post.image} alt={post.username + "'s image"} />
       )}
     </div>
   );
