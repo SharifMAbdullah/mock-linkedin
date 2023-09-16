@@ -4,15 +4,15 @@ const Post = require("../models/post");
 const multer = require("multer");
 const Minio = require("minio");
 const { requireAuth } = require("../middleware/authMiddleware");
-const Notification = require("../models/notification");
 const notificationModule = require("./notification");
+require("dotenv").config();
 
 const minioClient = new Minio.Client({
-  endPoint: "localhost",
-  port: 9000,
+  endPoint: process.env.END_POINT,
+  port: parseInt(process.env.MINIO_PORT),
   useSSL: false,
-  accessKey: "2clxQBCERNIESxmVBfFk",
-  secretKey: "prRpg2t4SEfKthPKyqogVaPz7PdaFTDDYmGBcQNm",
+  accessKey: process.env.ACCESS_KEY,
+  secretKey: process.env.SECRET_KEY,
 });
 
 const upload = multer({ dest: "uploads/" });

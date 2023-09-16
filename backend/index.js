@@ -5,7 +5,7 @@ const job = require("./job");
 
 setInterval(function() {
     job.cleanNotification();
-}, 10 * 1000);
+}, 60 * 10 * 1000);
   
 app.listen(PORT, () => {
   console.log(`server running on ${PORT}`);
