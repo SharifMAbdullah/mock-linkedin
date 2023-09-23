@@ -1,0 +1,15 @@
+version: '1'
+
+services:
+  NotificationService:
+    build: ./NotificationService
+  NotificationDB:
+  
+  PostService:
+    build: ./PostService
+  PostDB:
+  PostImageDB:
+  
+  UserService:
+    build: ./UserService
+  UserDB:
