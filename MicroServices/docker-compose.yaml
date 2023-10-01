@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+
+  notificationservice:
+    build: ./NotificationService
+    depends_on:
+      notificationdb:
+        condition: service_healthy
+
+  notificationdb:
+    image: mongo:4.0-xenial
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - mongo-data-notification:/data/db-notification
+
+  postservice:
+    build: ./PostService
+    depends_on:
+      - postdb
+      - minio
+    # environment:
+    #   - MONGO_URL="mongodb://postdb:27017/post?directConnection=true"
+
+  postdb:
+    image: mongo:4.0-xenial
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - mongo-data-post:/data/db-post
+
+  minio:
+    image: 'bitnami/minio:latest'
+    ports:
+      - '9000:9000'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+
+  userservice:
+    build: ./UserService
+    depends_on:
+      - userdb
+    # environment:
+    #   - MONGO_URL="mongodb://userdb:27017/user?directConnection=true"
+
+  userdb:
+    image: mongo:4.0-xenial
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - mongo-data-user:/data/db-user
+
+volumes:
+  mongo-data-notification:
+  mongo-data-post:
+  mongo-data-user:

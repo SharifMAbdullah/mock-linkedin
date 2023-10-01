@@ -1,16 +1,10 @@
 //necessary packages
 const express = require("express");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 
 //config files
 require("./config/db");
 require("dotenv").config();
-
-//models
-const User = require("./models/user");
-const Post = require("./models/post");
 
 //using express and necessary packages
 const app = express();
@@ -20,14 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-//testing home route
-app.get("/", (req, res) => {
-  res.send("sussy baka ekhane kisu nai");
-});
 
-//user login and registration
-const userRouter = require("./routes/user");
-app.use("/", userRouter);
 
 //get and create posts
 const postRouter = require("./routes/post");
