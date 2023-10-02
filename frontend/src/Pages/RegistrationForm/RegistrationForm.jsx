@@ -20,7 +20,7 @@ const RegistrationForm = () => {
       setShowModal(true);
     } else {
       try {
-        await axios.post('http://localhost:5656/registration', { username, email, password });
+        await axios.post('http://localhost:3636/registration', { username, email, password });
         setModalTitle('Registration Successful');
         setModalMessage('You can now login.');
         setShowModal(true);

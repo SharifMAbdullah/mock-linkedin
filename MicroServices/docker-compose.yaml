@@ -1,7 +1,6 @@
-version: '3'
+version: "3"
 
 services:
-
   notificationservice:
     build: ./NotificationService
     depends_on:
@@ -37,15 +36,17 @@ services:
       - mongo-data-post:/data/db-post
 
   minio:
-    image: 'bitnami/minio:latest'
+    image: "bitnami/minio:latest"
     ports:
-      - '9000:9000'
+      - "9000:9000"
     environment:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
 
   userservice:
     build: ./UserService
+    # ports:
+    #   - 3636:3636
     depends_on:
       - userdb
     # environment:
