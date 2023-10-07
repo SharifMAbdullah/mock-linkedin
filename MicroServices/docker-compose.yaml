@@ -45,8 +45,8 @@ services:
 
   userservice:
     build: ./UserService
-    # ports:
-    #   - 3636:3636
+    ports:
+      - 3636:3636
     depends_on:
       - userdb
     # environment:
