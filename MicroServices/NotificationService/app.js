@@ -18,10 +18,10 @@ app.use('/uploads', express.static('uploads'));
 
 //get and create posts
 const postRouter = require("./routes/post");
-app.use("/", postRouter);
+app.use("/post", postRouter);
 
 const notificationRouter = require("./routes/notification");
-app.use("/", notificationRouter.router);
+app.use("/notification", notificationRouter.router);
 
 //resource not found
 app.use((req, res, next) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import CustomModal from '../../Components/CustomModal/Modal';
-
+import { REG_URL } from '../../api-config';
 import styles from './RegistrationForm.module.css';
 
 const RegistrationForm = () => {
@@ -20,7 +20,7 @@ const RegistrationForm = () => {
       setShowModal(true);
     } else {
       try {
-        await axios.post('http://localhost:3636/registration', { username, email, password });
+        await axios.post(REG_URL, { username, email, password });
         setModalTitle('Registration Successful');
         setModalMessage('You can now login.');
         setShowModal(true);

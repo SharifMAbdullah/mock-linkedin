@@ -16,7 +16,7 @@ app.use('/uploads', express.static('uploads'));
 
 //user login and registration
 const userRouter = require("./routes/user");
-app.use("/", userRouter);
+app.use("/user", userRouter);
 
 //resource not found
 app.use((req, res, next) => {

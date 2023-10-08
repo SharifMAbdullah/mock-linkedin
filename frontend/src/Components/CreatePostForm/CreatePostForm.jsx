@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import {CREATE_POST_URL} from '../../api-config';
 import styles from './CreatePostForm.module.css';
 
 const CreatePostForm = () => {
@@ -27,7 +27,7 @@ const handleSubmit = async (e) => {
   console.log(postObject);
 
   try {
-    await axios.post('http://localhost:5656/createPost', postObject, {
+    await axios.post(CREATE_POST_URL, postObject, {
       headers: {
         Authorization: sessionStorage.getItem("token"),
         'Content-Type': 'multipart/form-data',

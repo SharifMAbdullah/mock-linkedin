@@ -3,6 +3,8 @@ version: "3"
 services:
   notificationservice:
     build: ./NotificationService
+    ports:
+      - 5656:5656    
     depends_on:
       notificationdb:
         condition: service_healthy
@@ -19,6 +21,8 @@ services:
 
   postservice:
     build: ./PostService
+    ports:
+      - 4646:4646    
     depends_on:
       - postdb
       - minio

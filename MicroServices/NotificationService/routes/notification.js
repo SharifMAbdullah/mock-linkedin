@@ -9,7 +9,6 @@ async function notifyAllUsers(postId, username) {
     // Fetch all users from the database
     console.log("Notifying all users about the new post. Post ID:")
       const users = await User.find();
-      console.log(users)
 
     // Create a notification for each user
     for (const user of users) {
@@ -29,7 +28,7 @@ async function notifyAllUsers(postId, username) {
   }
 }
 
-router.get("/notifications", async (req, res) => {
+router.get("/viewNotifications", async (req, res) => {
   try {
     // Fetch all notifications from the database
     const notifications = await Notification.find()

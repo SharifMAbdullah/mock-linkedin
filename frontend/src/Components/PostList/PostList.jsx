@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PostItem from '../PostItem/PostItem';
-
+import { VIEW_ALL_POST_URL } from "../../api-config";
 import styles from './PostList.module.css';
 
 const PostList = () => {
@@ -9,7 +9,7 @@ const PostList = () => {
 
   useEffect(() => {
     // Fetch posts from the server (adjust the API endpoint accordingly)
-    axios.get('http://localhost:5656/viewPost')
+    axios.get(VIEW_ALL_POST_URL)
       .then((response) => {
         setPosts(response.data);
       })

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './NotificationPage.module.css';
+import { VIEW_ALL_NOTIFICATION_URL } from '../../api-config';
 
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
@@ -11,7 +12,7 @@ const NotificationPage = () => {
     // Fetch notifications from the backend API
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('http://localhost:5656/notifications'); // Update the URL to match your backend route
+        const response = await axios.get(VIEW_ALL_NOTIFICATION_URL);
         setNotifications(response.data);
         console.log('Notifications: ' + JSON.stringify(response.data));
       } catch (error) {

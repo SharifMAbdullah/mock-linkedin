@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CustomModal from '../../Components/CustomModal/Modal';
-
+import { LOGIN_URL } from '../../api-config';
 import styles from './LoginForm.module.css';
 
 const LoginForm = ({onLoginSuccess}) => {
@@ -23,7 +23,7 @@ const LoginForm = ({onLoginSuccess}) => {
       setShowModal(true);
     } else {
       try {
-        axios.post('http://localhost:5656/login', { email, password })
+        axios.post(LOGIN_URL, { email, password })
           .then((response) => {
             if (response.data.error) {
               console.error('Error logging in: ' + response.data.error);
