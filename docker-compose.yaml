@@ -1,16 +1,29 @@
 version: "3"
 
 services:
+  nginx:
+    image: nginx:latest
+    build: .
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - postservice
+      - userservice
+      - notificationservice
+
   notificationservice:
-    build: ./NotificationService
+    build: ./MicroServices/NotificationService
     ports:
       - 5656:5656    
     depends_on:
-      notificationdb:
-        condition: service_healthy
+      - notificationdb
+        # condition: service_healthy
 
   notificationdb:
-    image: mongo:4.0-xenial
+    image: mongo
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
       interval: 10s
@@ -20,7 +33,7 @@ services:
       - mongo-data-notification:/data/db-notification
 
   postservice:
-    build: ./PostService
+    build: ./MicroServices/PostService
     ports:
       - 4646:4646    
     depends_on:
@@ -30,7 +43,7 @@ services:
     #   - MONGO_URL="mongodb://postdb:27017/post?directConnection=true"
 
   postdb:
-    image: mongo:4.0-xenial
+    image: mongo
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
       interval: 10s
@@ -48,7 +61,7 @@ services:
       - MINIO_ROOT_PASSWORD=minioadmin
 
   userservice:
-    build: ./UserService
+    build: ./MicroServices/UserService
     ports:
       - 3636:3636
     depends_on:
@@ -57,7 +70,7 @@ services:
     #   - MONGO_URL="mongodb://userdb:27017/user?directConnection=true"
 
   userdb:
-    image: mongo:4.0-xenial
+    image: mongo
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
       interval: 10s
