@@ -9,9 +9,7 @@ require("dotenv").config();
 const saltRounds = 10;
 
 router.get("/", async (req, res) => {
-  const result = await User.find({});
-  //console.log(result);
-  res.json(result);
+  console.log("paisi mama");
 });
 
 router.post("/registration", async (req, res) => {
