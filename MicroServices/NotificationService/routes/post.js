@@ -8,11 +8,11 @@ const notificationModule = require("./notification");
 require("dotenv").config();
 
 const minioClient = new Minio.Client({
-  endPoint: process.env.END_POINT,
-  port: parseInt(process.env.MINIO_PORT),
+  endPoint: "postobj",
+  port: 9000,
+  accessKey: "minioadmin",
+  secretKey: "minioadmin",
   useSSL: false,
-  accessKey: process.env.ACCESS_KEY,
-  secretKey: process.env.SECRET_KEY,
 });
 
 const upload = multer({ dest: "uploads/" });
@@ -27,7 +27,6 @@ router.post(
 
       // Check if image was provided
       if (!req.file) {
-
         // Create post without image
         const username = req.user.username;
         const newPost = new Post({
@@ -45,8 +44,6 @@ router.post(
           success: true,
           message: "New post successfully created",
         });
-
-
       }
 
       // Image was provided, proceed with processing
@@ -101,9 +98,8 @@ router.get("/viewPost", async (req, res) => {
   res.json(posts);
 });
 
-
 router.get("/viewPost/single", async (req, res) => {
-      console.log("ekhane ashse");
+  console.log("ekhane ashse");
 
   const postId = req.query.postId;
   try {

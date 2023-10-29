@@ -8,11 +8,14 @@ require("dotenv").config();
 //encryption
 const saltRounds = 10;
 
-router.get("/", async (req, res) => {
-  console.log("paisi mama");
+router.post("/test", async (req, res) => {
+  console.log("thiki to ase mone hoy...", req.body.name);
+  res.send({
+    message: "Paisi mama....",
+  });
 });
 
-router.post("/registration", async (req, res) => {
+router.post("/register", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
     res.status(400).send("user already exists");
@@ -78,7 +81,7 @@ router.post("/login", async (req, res) => {
             async (err, token) => {
               await User.updateOne({ _id: user._id }, { $set: { token } });
               user.save();
-              return res.status(200).json({token: token});
+              return res.status(200).json({ token: token });
             }
           );
         }

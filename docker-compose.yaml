@@ -17,38 +17,42 @@ services:
   notificationservice:
     build: ./MicroServices/NotificationService
     ports:
-      - 5656:5656    
+      - 5656:5656
     depends_on:
       - notificationdb
         # condition: service_healthy
+    environment: #! use it to avoid ERRCONNECTIONREFUSED error
+      - DB_URL=mongodb://notificationdb/notifydb
 
   notificationdb:
-    image: mongo
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
+    image: mongo:latest
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
     volumes:
       - mongo-data-notification:/data/db-notification
 
   postservice:
     build: ./MicroServices/PostService
     ports:
-      - 4646:4646    
+      - 4646:4646
     depends_on:
       - postdb
       - minio
-    # environment:
-    #   - MONGO_URL="mongodb://postdb:27017/post?directConnection=true"
+    environment:
+      - DB_URL=mongodb://postdb/postdb
 
   postdb:
-    image: mongo
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
+    image: mongo:latest
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
     volumes:
       - mongo-data-post:/data/db-post
 
@@ -66,16 +70,17 @@ services:
       - 3636:3636
     depends_on:
       - userdb
-    # environment:
-    #   - MONGO_URL="mongodb://userdb:27017/user?directConnection=true"
+    environment:
+      - DB_URL=mongodb://userdb/userdb
 
   userdb:
-    image: mongo
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
+    image: mongo:latest
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
     volumes:
       - mongo-data-user:/data/db-user
 

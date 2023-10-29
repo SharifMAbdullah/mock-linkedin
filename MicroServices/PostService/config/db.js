@@ -2,8 +2,12 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect("mongodb://postdb:27017/postdb", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    directConnection: true,
+  })
   .then(() => {
-    console.log("MongoDB connected...");
+    console.log("Post DB connected...");
   })
   .catch(console.error);
