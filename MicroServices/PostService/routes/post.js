@@ -16,17 +16,32 @@ const minioClient = new Minio.Client({
 });
 
 const bucketName = "linkedin";
-const policy = `{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::${bucketName}/*"]}]}`
+const policy =
+`{
+  "Version":"2012-10-17",
+    "Statement":
+    [
+      {
+        "Effect":"Allow",
+        "Principal":{"AWS":["*"]},
+        "Action":["s3:GetObject"],
+        "Resource":["arn:aws:s3:::${bucketName}/*"]
+      }
+    ]
+}`;
 
-minioClient.makeBucket(bucketName, "us-east-1", function (err) {
-  if (err) return console.log("Error creating bucket.", err);
-  console.log('Bucket created successfully in "us-east-1".');
-});
+minioClient
+  .makeBucket(bucketName, "us-east-1")
+  .then(() => {
+    minioClient.setBucketPolicy(bucketName, policy, function (err) {
+      if (err) return console.log("Error setting bucket policy.", err);
+      console.log("Bucket policy set to allow public access.");
+    });
+  })
+  .catch((err) => {
+    console.log("Error creating bucket.", err);
+  });
 
-minioClient.setBucketPolicy(bucketName, policy, function (err) {
-  if (err) return console.log("Error setting bucket policy.", err);
-  console.log("Bucket policy set to allow public access.");
-});
 
 const upload = multer({ dest: "uploads/" });
 
