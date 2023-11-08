@@ -1,32 +1,44 @@
 const User = require("../models/user");
 const Notification = require("../models/notification");
 const express = require("express");
+const axios = require('axios');
 const { requireAuth } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-async function notifyAllUsers(postId, username) {
-  try {
-    // Fetch all users from the database
-    console.log("Notifying all users about the new post. Post ID:")
+router.get("/test", (req, res) => {
+  res.send("paisi mama notification");
+})
+
+router.post("/notifyAllUsers", async (postId, username) => {
+    try {
+      console.log("Notifying all users about the new post. Post ID:" + postId +username);
       const users = await User.find();
-
-    // Create a notification for each user
-    for (const user of users) {
+      // const users = await axios.get("http://userservice:3636/user/getAllUsers");
+      // const userList = JSON.stringify(users);
+      // console.log("user der list: " + userList);
+      // console.log("user er type" + typeof (users));
+      console.log(users);
+      // Create a notification for each user
+      for (const user of users) {
+        console.log("notif er for e dhukse");
         if (user.username !== username) {
-        //   console.log('username :', user.username)
-        const newNotification = new Notification({
-          user: user._id,
-          postId: postId,
-          message: `${username} has created a new post.`,
-        });
+          console.log("notif er if e dhukse");
+          //   console.log('username :', user.username)
+          const newNotification = new Notification({
+            // user: user._id,
+            postId: postId,
+            message: `${username} has created a new post.`,
+          });
 
-        await newNotification.save();
+          await newNotification.save();
+          console.log(newNotification);
+        }
       }
+    } catch (err) {
+      console.log("Error notifying users:", err);
     }
-  } catch (err) {
-    console.log("Error notifying users:", err);
   }
-}
+)
 
 router.get("/viewNotifications", async (req, res) => {
   try {
@@ -44,8 +56,4 @@ router.get("/viewNotifications", async (req, res) => {
   }
 });
 
-// module.exports = {
-//     notifyAllUsers,
-//     router
-// };
-module.exports = { router, notifyAllUsers };
+module.exports = { router };

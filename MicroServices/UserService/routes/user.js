@@ -93,4 +93,18 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/getAllUsers", async (req, res) => {
+    User.find()
+      .then((response) => {
+        res.json({
+          response,
+        });
+      })
+      .catch((error) => {
+        res.json({
+          message: "An error occured!",
+        });
+      });
+});
+
 module.exports = router;

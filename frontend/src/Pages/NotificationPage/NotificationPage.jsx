@@ -29,7 +29,8 @@ const NotificationPage = () => {
 
   const handleNotificationClick = async (postId) => {
     try {
-      const response = await axios.get(`http://localhost:5656/viewPost/single?postId=${postId}`);
+      console.log("ekhane ashe naki?" +postId);
+      const response = await axios.get(`http://localhost/viewPost/single?postId=${postId}`);
       setResponseData(response.data); // Save the response data in state
     } catch (error) {
       console.error('Error fetching post:', error);

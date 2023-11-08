@@ -15,11 +15,6 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 
-
-//get and create posts
-const postRouter = require("./routes/post");
-app.use("/post", postRouter);
-
 const notificationRouter = require("./routes/notification");
 app.use("/notification", notificationRouter.router);
 

@@ -20,9 +20,6 @@ app.use('/uploads', express.static('uploads'));
 const postRouter = require("./routes/post");
 app.use("/post", postRouter);
 
-const notificationRouter = require("./routes/notification");
-app.use("/notification", notificationRouter.router);
-
 //resource not found
 app.use((req, res, next) => {
   res.status(404).json({ message: "route not found" });

@@ -4,7 +4,7 @@ const Post = require("../models/post");
 const multer = require("multer");
 const Minio = require("minio");
 const { requireAuth } = require("../middleware/authMiddleware");
-const notificationModule = require("./notification");
+const axios = require("axios");
 require("dotenv").config();
 
 const minioClient = new Minio.Client({
@@ -63,11 +63,20 @@ router.post(
         });
 
         const savedPost = await newPost.save();
-
+        console.log("New post saved:", savedPost._id.toString());
         // Notify all other users
-        await notificationModule.notifyAllUsers(savedPost._id, username);
+        axios.post(
+          "http://notificationservice:5656/notification/notifyAllUsers",
+          {
+            postId: savedPost._id,
+            username: username,
+          },
+          {
+            json: true,
+          }
+        );
 
-        console.log("New post saved:", savedPost);
+        // console.log("New post saved:", savedPost._id);
         return res.send({
           success: true,
           message: "New post successfully created",
@@ -104,8 +113,14 @@ router.post(
           });
 
           const savedPost = await newPost.save();
-          //Notify all other users
-          await notificationModule.notifyAllUsers(savedPost._id, username);
+          await axios.post(
+            "http://notificationservice:5656/notification/notifyAllUsers",
+            {
+              postId: savedPost._id,
+              message: "New post created",
+              username: username,
+            }
+          );
           console.log("New post saved:", savedPost);
           return res.send({
             success: true,

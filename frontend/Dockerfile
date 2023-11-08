@@ -8,6 +8,4 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3636
-
 RUN npm run build

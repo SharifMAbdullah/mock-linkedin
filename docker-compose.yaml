@@ -23,15 +23,12 @@ services:
         # condition: service_healthy
     environment: #! use it to avoid ERRCONNECTIONREFUSED error
       - DB_URL=mongodb://notificationdb/notifydb
+    volumes:
+      - mongo-data-user:/data/db-user
 
   notificationdb:
     image: mongo:latest
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 5
     volumes:
       - mongo-data-notification:/data/db-notification
 
@@ -44,15 +41,12 @@ services:
       - minio
     environment:
       - DB_URL=mongodb://postdb/postdb
+    volumes:
+      - ./MicroServices/PostService:/app/post_data
 
   postdb:
     image: mongo:latest
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 5
     volumes:
       - mongo-data-post:/data/db-post
 
@@ -72,15 +66,12 @@ services:
       - userdb
     environment:
       - DB_URL=mongodb://userdb/userdb
+    volumes:
+      - mongo-data-user:/data/db-user
 
   userdb:
     image: mongo:latest
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })"]
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 5
     volumes:
       - mongo-data-user:/data/db-user
 
